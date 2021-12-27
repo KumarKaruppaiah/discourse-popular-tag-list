@@ -28,7 +28,7 @@
 
       getTags(){
        return ajax("/tags.json");
-      }
+      },
   
       getPost(id) {
         if (!postCache[id]) {
@@ -41,10 +41,7 @@
       }
     });
   </script>
-  
-  <script
-    type="text/x-handlebars"
-    data-template-name="/connectors/below-site-header/tag-sidebar"
-  >
+
+<script type="text/x-handlebars" data-template-name="/connectors/below-site-header/tag-sidebar">
     <div class="tag-sidebar"> {{mount-widget widget="tag-sidebar"}} </div>
   </script>
