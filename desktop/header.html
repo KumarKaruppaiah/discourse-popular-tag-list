@@ -3,7 +3,8 @@
     const container = Discourse.__container__;
     const { h } = require("virtual-dom");
     const { ajax } = require("discourse/lib/ajax");   
-  
+    const {RawHtml} = require ("discourse/widgets/raw-html");
+
     api.createWidget("tag-sidebar", {
       tagName: "div.sticky-sidebar",
   
@@ -21,9 +22,16 @@
         }
         
         this.getTags().then((response)=>{
+            sidebarClasses();
             const res = JSON.stringify(response);
-            $(".sticky-sidebar").html(res);
-            return h("<h1>"+res+"</h1>");
+            let html = "<ul>";
+            if(repose.tags){
+                response.tags.each(function(item){
+                    html= "<li>"+item.text+"</li>"
+             });
+             html = html+"</ul>";
+            }
+            return new RawHtml({ html: <html>});            
         });         
       },
 
