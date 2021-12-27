@@ -20,7 +20,7 @@
           $(".sticky-sidebar").css("top", stickyOffset + "px");
         }
         
-        getTags().then((response)=>{
+        this.getTags().then((response)=>{
             const res = JSON.stringify(response);
             return h("<h1>"+res+"</h1>");
         });         
