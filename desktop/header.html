@@ -36,28 +36,8 @@
           $(".sticky-sidebar").css("top", stickyOffset + "px");
         }
   
-        <!-- if (/^\/tag\//.test(path) && setups[tag.id]){ // If set, show tag sidebar
-          const setup = setups[tag.id];
-          sidebarClasses(setup);
-  
-          const nodes = [
-            h("div.cooked", {
-              innerHTML: this.getPost(setup["post"])
-            })
-          ];
-          return h("div.tag-sidebar-contents " + ".tag-sidebar-" + tag.id, nodes);
-  
-       } else {
-          $("body").removeClass("custom-sidebar");
-          $(".topic-list").removeClass("with-sidebar");
-        } -->
-
-        const nodes = [
-        h("div.cooked", {
-          innerHTML: '<h1>This is test component</h1>'
-        })
-      ];
-      return h("div.tag-sidebar-contents " + ".tag-sidebar-" + tag.id, nodes);
+       
+      return "<h1>This is test</h1>"
       },
   
       getPost(id) {
