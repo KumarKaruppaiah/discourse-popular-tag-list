@@ -25,7 +25,7 @@
             sidebarClasses();
             const res = JSON.stringify(response);
             let html = "<ul>";
-            if(repose.tags){
+            if(response.tags){
                 response.tags.each(function(item){
                     html= "<li>"+item.text+"</li>"
              });
