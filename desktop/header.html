@@ -27,7 +27,7 @@
             let html = "<ul>";
             if(response.tags){
                 debugger;
-                response.tags.each(function(item){
+                response.tags.forEach(function(item){
                     html= "<li>"+item.text+"</li>"
              });
              html = html+"</ul>";
