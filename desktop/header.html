@@ -1,0 +1,73 @@
+<script type="text/discourse-plugin" version="0.8">
+    function defaultSettings() {
+      return {};
+    }
+  
+    function parseSetups(raw) {
+      const parsed = {};
+      raw.split("|").forEach(setting => {
+        const [tag, value] = setting.split(",").map(s => s.trim());
+        parsed[tag] = parsed[tag] || defaultSettings();
+        parsed[tag]["post"] = value;
+      });
+      return parsed;
+    }
+  
+    const setups = parseSetups(settings.setup);
+    const container = Discourse.__container__;
+    const { h } = require("virtual-dom");
+    const { ajax } = require("discourse/lib/ajax");
+    const postCache = {};
+  
+  
+    api.createWidget("tag-sidebar", {
+      tagName: "div.sticky-sidebar",
+  
+      html() {
+        const path = window.location.pathname;
+        const controller = container.lookup("controller:tags-show");
+        const tag = controller.get("tag");
+        const stickyOffset  = document.getElementsByClassName('d-header')[0].offsetHeight + 20;
+        const sidebarWrapper = document.getElementById("fixed-wrapper");
+  
+        function sidebarClasses(setup) {
+          $("body").addClass("custom-sidebar");
+          $(".topic-list").addClass("with-sidebar").addClass(settings.sidebar_side);
+          $(".sticky-sidebar").css("top", stickyOffset + "px");
+        }
+  
+        if (/^\/tag\//.test(path) && setups[tag.id]){ // If set, show tag sidebar
+          const setup = setups[tag.id];
+          sidebarClasses(setup);
+  
+          const nodes = [
+            h("div.cooked", {
+              innerHTML: this.getPost(setup["post"])
+            })
+          ];
+          return h("div.tag-sidebar-contents " + ".tag-sidebar-" + tag.id, nodes);
+  
+       } else {
+          $("body").removeClass("custom-sidebar");
+          $(".topic-list").removeClass("with-sidebar");
+        }
+      },
+  
+      getPost(id) {
+        if (!postCache[id]) {
+          ajax(`/t/${id}.json`).then(response => {
+            postCache[id] = response.post_stream.posts[0].cooked;
+            this.scheduleRerender();
+          });
+        }
+        return postCache[id];
+      }
+    });
+  </script>
+  
+  <script
+    type="text/x-handlebars"
+    data-template-name="/connectors/before-topic-list-body/tag-sidebar"
+  >
+    <div class="tag-sidebar"> {{mount-widget widget="tag-sidebar"}} </div>
+  </script>
