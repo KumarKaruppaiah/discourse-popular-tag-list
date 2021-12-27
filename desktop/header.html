@@ -32,6 +32,7 @@
              });
              html = html+"</ul>";
             }
+            this.scheduleRerender();
             return new RawHtml({ html: html});            
         });         
       },
