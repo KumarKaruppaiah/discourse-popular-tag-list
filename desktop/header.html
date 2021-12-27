@@ -26,6 +26,7 @@
             const res = JSON.stringify(response);
             let html = "<ul>";
             if(response.tags){
+                debugger;
                 response.tags.each(function(item){
                     html= "<li>"+item.text+"</li>"
              });
