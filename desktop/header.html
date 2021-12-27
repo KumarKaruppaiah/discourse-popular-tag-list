@@ -22,6 +22,7 @@
         
         this.getTags().then((response)=>{
             const res = JSON.stringify(response);
+            $(".sticky-sidebar").html(res);
             return h("<h1>"+res+"</h1>");
         });         
       },
