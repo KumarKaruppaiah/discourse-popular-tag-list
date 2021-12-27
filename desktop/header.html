@@ -1,24 +1,8 @@
 <script type="text/discourse-plugin" version="0.8">
-    function defaultSettings() {
-      return {};
-    }
-  
-    function parseSetups(raw) {
-      const parsed = {};
-      raw.split("|").forEach(setting => {
-        const [tag, value] = setting.split(",").map(s => s.trim());
-        parsed[tag] = parsed[tag] || defaultSettings();
-        parsed[tag]["post"] = value;
-      });
-      return parsed;
-    }
-  
-    const setups = parseSetups(settings.setup);
+
     const container = Discourse.__container__;
     const { h } = require("virtual-dom");
-    const { ajax } = require("discourse/lib/ajax");
-    const postCache = {};
-  
+    const { ajax } = require("discourse/lib/ajax");   
   
     api.createWidget("tag-sidebar", {
       tagName: "div.sticky-sidebar",
@@ -35,10 +19,16 @@
           $(".below-site-header-outlet").addClass("with-sidebar").addClass(settings.sidebar_side);
           $(".sticky-sidebar").css("top", stickyOffset + "px");
         }
-  
-       
-      return h("<h1>This is test</h1>");
+        
+        getTags().then((response)=>{
+            const res = JSON.stringify(response);
+            return h("<h1>"+res+"</h1>");
+        });         
       },
+
+      getTags(){
+       return ajax("/tags.json");
+      }
   
       getPost(id) {
         if (!postCache[id]) {
